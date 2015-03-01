@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Credit Card Validator</title>
+	<link rel="stylesheet"  href="css/jquery.mobile.min.css">
+	<style>
+		#homeBanner {
+			width: 100%;
+		}
+		.center {
+			text-align: center;
+			margin-left: auto;
+			margin-right:auto;
+		}
+		.banner {
+			display:block;
+			width: 100%;
+		}
+		#qrcode {
+			display:block;	
+			margin-left: auto;
+			margin-right:auto;
+		}
+		#map2 {
+			margin-left: auto;
+			margin-right:auto;
+			width: 320px;
+			height: 320px;  
+		}
+		
+	</style>
+	<link rel="stylesheet" href="css/leaflet.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/map.js"></script>
+	<script src="js/jquery.mobile.min.js"></script>
+	<script src="js/leaflet.js"></script>
+	<script src="js/app.js"></script>
+	<script src="phonegap.js"></script>
+	<script src="barcodescanner.js"></script>
+
+
+
+</head>
+	
+<body>
+<div id="homeScreen" data-role="page">
+	<img src="imgs/ccValid.png" class="banner" />
+	<div data-role="content">
+		<ul data-role="listview" data-inset="true" class="ui-nodisc-icon ui-alt-icon">
+			<li><a href="#currentExhibits" >Enter Your Credit Card No.</a></li>
+			
+
+		</ul>
+		<div class="ui-grid-a center">
+    		<div class="ui-block-a">
+				<a href="#aboutScreen" class="ui-btn ui-corner-all ui-icon-info ui-btn-icon-notext ui-btn-inline ui-nodisc-icon ui-alt-icon">Info</a>
+			</div>
+    		<div class="ui-block-b">
+				<a href="#mapScreen" class="ui-btn ui-corner-all ui-icon-location ui-btn-icon-notext ui-btn-inline ui-nodisc-icon ui-alt-icon">Map</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="mapScreen" data-role="page">
+	<header data-role="header" data-position="fixed" data-id="appHeader">
+		<h1>My Location</h1>
+		<a href="#homeScreen" class="ui-btn ui-icon-carat-l ui-btn-icon-notext ui-btn-left ui-nodisc-icon ui-alt-icon">Back</a>
+	</header>
+	<div data-role="content">
+	<iframe width="100%" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=+&amp;q=Illinois+State+University&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=40.511579,-88.993314&amp;spn=0.006295,0.006295&amp;t=m&amp;iwloc=A&amp;output=embed"></iframe>
+	</div>
+</div>
+
+<div id="currentExhibits" data-role="page">
+	<header data-role="header" data-position="fixed" data-id="appHeader">
+		<h1>Validate Here</h1>
+		<a href="#homeScreen" class="ui-btn ui-icon-carat-l ui-btn-icon-notext ui-btn-left ui-nodisc-icon ui-alt-icon">Back</a>
+	</header>
+	<div data-role="content">
+		<h1 class="center">Credit Card Validator</h1>
+		<form onsubmit="return valid_credit_card(this)">
+			CC#<input type="text" id="ccNumber" name="ccNumber"/>
+			<button type="submit" data-inline="true">Verify</button>
+			<div id="ccMsg"></div>
+		</form>
+	</div>
+	
+</div>
+
+
+
+<script>
+	// takes the form field value and returns true on valid number
+function valid_credit_card(value) {
+	value =value.ccNumber.value;
+	// takes the form field value and returns true on valid number
+  // accept only digits, dashes or spaces
+	if (/[^0-9-\s]+/.test(value)) return false;
+ 
+	// The Luhn Algorithm. It's so pretty.
+	var nCheck = 0, nDigit = 0, bEven = false;
+	value = value.replace(/\D/g, "");
+ 
+	for (var n = value.length - 1; n >= 0; n--) {
+		var cDigit = value.charAt(n),
+			  nDigit = parseInt(cDigit, 10);
+ 
+		if (bEven) {
+			if ((nDigit *= 2) > 9) nDigit -= 9;
+		}
+ 
+		nCheck += nDigit;
+		bEven = !bEven;
+	}
+	
+ 	if(nCheck % 10==0){
+ 		var innnerOutput = document.getElementById("ccMsg");
+ 		innnerOutput.innerHTML="<div style=\"color:Green\">Valid Credit Card Number</div>";
+ 		//alert("Your Credit Card Number is valid");
+ 		return false;
+ 		//return (nCheck % 10) == 0;
+ 	}
+ 	else{
+ 		var innnerOutput = document.getElementById("ccMsg");
+ 		//alert("Invalid Credit Card Number");
+ 		innnerOutput.innerHTML="<div style=\"color:Red\">Invalid Credit Card Number</div>";
+ 		return false;
+ 	}
+	
+
+
+	
+	// alert(form1.ccNumber.value);
+	// return false;
+}
+	
+
+</script>
+	
+
+
+
+
+<div id="aboutScreen" data-role="page">
+	<header data-role="header" data-position="fixed" data-id="appHeader">
+		<h1>About Me</h1>
+		<a href="#homeScreen" class="ui-btn ui-icon-carat-l ui-btn-icon-notext ui-btn-left ui-nodisc-icon ui-alt-icon">Back</a>
+	</header>
+	<div data-role="content">
+		<h4><span class="glyphicon glyphicon-map-marker"></span> Get in touch with me. <small>I can be accessible!</small></h4>
+						<img src="./imgs/Nikunj.jpg" class="thumbnail pull-left" id="myTabImage" alt="Nikunj"/>
+						<p>You can definitely reach me out. Just give me a call on below number or shoot me an email on the below mentioned email address.</p>
+		<p>Email: nikunj.ratnaparkhi@gmail.com</p>
+		<p>208 W Irving, Normal-Illinois 61761 (309) 750-5527</p>
+	</div>
+</div>
+</body>
+</html>
