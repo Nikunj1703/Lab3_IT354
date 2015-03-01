@@ -96,9 +96,21 @@
 	// takes the form field value and returns true on valid number
 function valid_credit_card(value) {
 	value =value.ccNumber.value;
-	// takes the form field value and returns true on valid number
+	
+  
+  var innnerOutput = document.getElementById("ccMsg");
+  if(value.length==0){
+  	innnerOutput.innerHTML="<div style=\"color:Red\">Please enter valid Credit Card Number</div>";
+  	return false;
+  }
+
+
   // accept only digits, dashes or spaces
-	if (/[^0-9-\s]+/.test(value)) return false;
+	if (/[^0-9-\s]+/.test(value)){ 
+		innnerOutput.innerHTML="<div style=\"color:Red\">Invalid Credit Card Number-alphabets are not allowed</div>";
+		//value="";
+		return false;
+	}
  
 	// The Luhn Algorithm. It's so pretty.
 	var nCheck = 0, nDigit = 0, bEven = false;
@@ -117,14 +129,14 @@ function valid_credit_card(value) {
 	}
 	
  	if(nCheck % 10==0){
- 		var innnerOutput = document.getElementById("ccMsg");
+ 		
  		innnerOutput.innerHTML="<div style=\"color:Green\">Valid Credit Card Number</div>";
  		//alert("Your Credit Card Number is valid");
  		return false;
  		//return (nCheck % 10) == 0;
  	}
  	else{
- 		var innnerOutput = document.getElementById("ccMsg");
+ 		//var innnerOutput = document.getElementById("ccMsg");
  		//alert("Invalid Credit Card Number");
  		innnerOutput.innerHTML="<div style=\"color:Red\">Invalid Credit Card Number</div>";
  		return false;
